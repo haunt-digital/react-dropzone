@@ -116,7 +116,12 @@ class Dropzone extends React.Component {
   }
 
   allFilesAccepted(files) {
-    return files.every(file => accepts(file, this.props.accept));
+    return files.every(file => accepts(file, this.props.accept)) && files.every(file => this.doesNotExceedMaxSize(file));
+  }
+
+  doesNotExceedMaxSize(file) {
+    const maxSize = this.props.maxSize;
+    return file.size <= maxSize;
   }
 
   open() {
@@ -227,7 +232,8 @@ class Dropzone extends React.Component {
 Dropzone.defaultProps = {
   disablePreview: false,
   disableClick: false,
-  multiple: true
+  multiple: true,
+  maxSize: null
 };
 
 Dropzone.propTypes = {
@@ -251,7 +257,8 @@ Dropzone.propTypes = {
   inputProps: React.PropTypes.object,
   multiple: React.PropTypes.bool,
   accept: React.PropTypes.string,
-  name: React.PropTypes.string
+  name: React.PropTypes.string,
+  maxSize: React.PropTypes.number
 };
 
 export default Dropzone;
